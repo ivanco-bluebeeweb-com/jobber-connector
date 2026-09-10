@@ -10,7 +10,7 @@ class NoParams(BaseModel):
 class ConnectParams(BaseModel):
     label: str = Field(default="", description="Friendly connection label, e.g. Primary Jobber.")
     api_token: str = Field(description="Platform Access Token / API Key")
-    base_url: str = Field(default="https://api.getjobber.com/api", description="Jobber API base URL.")
+    base_url: str = Field(default="https://api.getjobber.com/api/graphql", description="Jobber API base URL.")
 
 class ConnectionIdParams(BaseModel):
     connection_id: str = Field(default="", description="Connection identifier (empty uses active connection).")

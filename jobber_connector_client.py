@@ -3,7 +3,7 @@ from __future__ import annotations
 import httpx
 from typing import Any, Optional
 
-DEFAULT_BASE = "https://api.getjobber.com/api"
+DEFAULT_BASE = "https://api.getjobber.com/api/graphql"
 
 class JobberClient:
     def __init__(self, api_token: str, base_url: str = ""):
@@ -19,7 +19,7 @@ class JobberClient:
     async def verify_auth(self) -> dict[str, Any]:
         async with httpx.AsyncClient(timeout=self.timeout) as client:
             try:
-                resp = await client.get(f"{self.base_url}/projects", headers=self.headers)
+                resp = await client.post(self.base_url, headers={**self.headers, "X-JOBBER-GRAPHQL-VERSION": "2026-06-25"}, json={"query": "query { clients { totalCount } }"})
                 if resp.status_code in (200, 201, 204):
                     return {"status": "ok", "data": resp.json() if resp.content else {}}
                 return {"status": "error", "error": f"HTTP {resp.status_code}: {resp.text}"}
